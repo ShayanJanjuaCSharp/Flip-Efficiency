@@ -49,7 +49,7 @@ export default function Generate() {
     const docSnap = await getDoc(userDocRef)
 
     if (docSnap.exists()) {
-      const collections = docSnap.data().flashcards
+      const collections = docSnap.data().flashcards || []
 
       if (collections.find((f) => f.name === name)) {
         alert("Flashcard collection with the same name already exists.")
