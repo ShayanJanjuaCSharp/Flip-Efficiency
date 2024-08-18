@@ -2,10 +2,11 @@
 
 import getStripe from '@/utils/get-stripe'
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
-import { AppBar, Box, Button, Container, Grid, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Button, Container, createTheme, Grid, Toolbar, Typography } from '@mui/material'
 import Head from 'next/head'
 
 let appTitle = "FireFlash"
+
 
 export default function Home() {
 
@@ -35,13 +36,13 @@ export default function Home() {
   }
 
   return (
-    <Container maxWidth="100vw">
+    <Container maxWidth="100vw" sx={{ backgroundColor: "#FFDAB9", maxHeight:"100vh" }}>
       <Head>
         <title>{appTitle}</title>
         <meta name='description' content='Create flashcards from your text!' />
       </Head>
 
-      <AppBar position='static'>
+      <AppBar position='static' sx={{ backgroundColor: "#C99A83" }}>
         <Toolbar>
           <Typography variant='h6' style={{flexGrow: 1}}>{appTitle}</Typography>
           <SignedOut>
@@ -54,13 +55,13 @@ export default function Home() {
         </Toolbar>
       </AppBar>
 
-      <Box sx={{textAlign: "center", my: 4}}>
+      <Box sx={{textAlign: "center", my: 4, backgroundColor:"#FFDAB9" }}>
         <Typography variant='h2' gutterBottom>Welcome to {appTitle}!</Typography>
         <Typography variant="h5" gutterBottom>The easiest way to make flashcards from your text!</Typography>
-        <Button variant='contained' color='primary' sx={{mt: 2}}>Get Started</Button>
+        <Button variant='contained' sx={{mt: 2, backgroundColor: "#634526", '&:hover': { backgroundColor: "#52371E" }}}>Get Started</Button>
       </Box>
 
-      <Box sx={{my: 6, textAlign: "center"}}>
+      <Box sx={{my: 6, textAlign: "center", backgroundColor:"#FFDAB9" }}>
         <Typography variant='h4' components="h2" gutterBottom>Features</Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
@@ -86,7 +87,7 @@ export default function Home() {
               <Typography variant="h5" gutterBottom>Basic</Typography>
               <Typography variant="h6" gutterBottom>£5 / month</Typography>
               <Typography>Access to basic flashcard features and limited storage.</Typography>
-              <Button variant='contained' color='primary' sx={{mt: 2}} onClick={handleSubmit}>Choose Basic</Button>
+              <Button variant='contained'  sx={{mt: 2, backgroundColor: "#634526", '&:hover': { backgroundColor: "#52371E" }}} onClick={handleSubmit}>Choose Basic</Button>
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -94,7 +95,7 @@ export default function Home() {
               <Typography variant="h5" gutterBottom>Pro</Typography>
               <Typography variant="h6" gutterBottom>£10 / month</Typography>
               <Typography>Unlimited flashcards and storage, with priority support.</Typography>
-              <Button variant='contained' color='primary' sx={{mt: 2}} onClick={handleSubmit}>Choose Pro</Button>
+              <Button variant='contained' sx={{mt: 2, backgroundColor: "#634526", '&:hover': { backgroundColor: "#52371E" }}} onClick={handleSubmit}>Choose Pro</Button>
             </Box>
           </Grid>
         </Grid>

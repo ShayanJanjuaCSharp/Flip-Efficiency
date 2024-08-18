@@ -4,16 +4,12 @@ import { AppBar, Box, Button, Container, Link, Toolbar, Typography } from "@mui/
 let appTitle = "FireFlash"
 
 export default function SignInPage() {
-  return <Container maxWidth="sm">
-    <AppBar position="static">
+  return  <Container maxWidth="100vw" sx={{ backgroundColor: "#FFDAB9", maxHeight:"100vh" }}>
+    <AppBar position='static' sx={{ backgroundColor: "#C99A83" }}>
       <Toolbar>
         <Typography variant="h6" sx={{flexGrow: 1}}>{appTitle}</Typography>
-        <Button color="inherit">
-          <Link href="/sign-in" passHref>Sign In</Link>
-        </Button>
-        <Button color="inherit">
-          <Link href="/sign-up" passHref>Sign Up</Link>
-        </Button>
+        <Button color="inherit" href='/sign-in'>Sign In</Button>
+        <Button color="inherit" href='/sign-up'>Sign Up</Button>
       </Toolbar>
     </AppBar>
 
