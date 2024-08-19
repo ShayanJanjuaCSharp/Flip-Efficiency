@@ -19,6 +19,7 @@ You are a flashcard creator. Your task is to generate concise and effective flas
 
 Remember, the goal is to facilitate effective learning and retention of information through these flashcards.`
 
+
 // Gemini model with systemInstruction
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
@@ -41,6 +42,7 @@ const model = genAI.getGenerativeModel({
     }
   }
 });
+
 
 export async function POST(req) {
   const data = await req.text()

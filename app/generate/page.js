@@ -1,11 +1,15 @@
 'use client'
 
 import { useUser } from "@clerk/nextjs"
-import { Box, Button, Card, CardActionArea, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, TextField, Typography } from "@mui/material"
+import { AppBar, Box, Button, Card, CardActionArea, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, TextField, Typography } from "@mui/material"
 import { doc, setDoc, getDoc, collection, writeBatch } from "firebase/firestore"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { db } from "@/firebase"
+import {Toolbar} from '@mui/material'
+import Head from 'next/head'
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+
 
 export default function Generate() {
   const {isLoaded, isSignedIn, user} = useUser()
@@ -32,6 +36,12 @@ export default function Generate() {
 
   const handleOpen = () => {
     setOpen(true)
+  }
+  const handleHome = () => {
+    router.push('/')
+  }
+  const handleFC = () => {
+    router.push('/flashcards')
   }
 
   const handleClose = () => {
@@ -73,12 +83,35 @@ export default function Generate() {
     router.push("/flashcards")
   }
 
-  return <Container maxWidth="md">
-    <Box sx={{mt: 4, mb: 6, display: "flex", flexDirection: "column", alignItems: "center"}}>
+  return (
+    <Box width = "100%" height ="100vh" sx={{ backgroundColor: "#FFDAB9", minHeight: "100%" }}>
+  <AppBar position='static' sx={{ backgroundColor: "#C99A83" }}>
+        <Toolbar>
+          <Typography variant='h6' style={{flexGrow: 1}}>Flip Efficiency</Typography>
+          <SignedOut>
+            <Button color="inherit" href='/sign-in'>Sign In</Button>
+            <Button color="inherit" href='/sign-up'>Sign Up</Button>
+          </SignedOut>
+          <SignedIn>
+            <Button onClick={handleHome} sx={{color: '#4B3621'}}>Home</Button>
+            <Button onClick={handleFC} sx={{color: '#4B3621'}}>Flashcards</Button>
+            <UserButton />
+          </SignedIn>
+        </Toolbar>
+      </AppBar>
+  <Container width="100%" height = "100%" sx={{ backgroundColor: "#FFDAB9", minHeight: "100%" }}>
+    <Box sx={{mt: 4, mb: 6, display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: '#FFDAB9'}}>
       <Typography variant="h4">Generate Flashcards</Typography>
-      <Paper sx={{p: 4, width: "100%"}}>
-        <TextField value={text} onChange={(e) => setText(e.target.value)} label="Enter text" multiline rows={4} fullWidth variant="outlined" sx={{mb: 2}} />
-        <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth>Submit</Button>
+      <Paper sx={{p: 4, width: "100%",backgroundColor: '#ffe2cc'}} elevation={8} spacing={2} >
+        <TextField value={text} onChange={(e) => setText(e.target.value)} label="Enter text" multiline rows={4} fullWidth variant="outlined" sx={{mb: 2,
+              '& .MuiInputBase-input': { color: '#4B3621' },
+              '& .MuiInputLabel-root': { color: '#4B3621' },
+              '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': { borderColor: '#4B3621' },
+              '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#4B3621' },
+              '& .MuiInputLabel-root.Mui-focused': { color: '#4B3621' }
+            }}/>
+            
+        <Button variant="contained" sx={{backgroundColor:'#4B3621'}} onClick={handleSubmit} fullWidth>Submit</Button>
       </Paper>
     </Box>
 
@@ -130,4 +163,6 @@ export default function Generate() {
       </DialogActions>
     </Dialog>
   </Container>
+  </Box>
+  )
 }

@@ -8,7 +8,7 @@ const formatAmountForStripe = (amount) => {
 }
 export async function POST(req) {
   const params = {
-    mode: 'subscription',
+    mode: 'Payment',
     payment_method_types: ['card'],
     line_items: [
       {
@@ -17,11 +17,7 @@ export async function POST(req) {
           product_data: {
             name: 'Pro Subscription',
           },
-          unit_amount: formatAmountForStripe(10, 'usd'), // £10.00
-          recurring: {
-            interval: 'month',
-            interval_count: 1,
-          },
+          unit_amount: formatAmountForStripe(1, 'usd'), 
         },
         quantity: 1,
       },

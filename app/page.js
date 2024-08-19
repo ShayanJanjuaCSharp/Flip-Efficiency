@@ -2,15 +2,36 @@
 
 import getStripe from '@/utils/get-stripe'
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
-import { AppBar, Box, Button, Container, createTheme, Grid, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Button, Container, Grid, Toolbar, Typography } from '@mui/material'
 import Head from 'next/head'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import posthog from 'posthog-js'
 
-let appTitle = "FireFlash"
-
+let appTitle = "Flip Efficiency"
 
 export default function Home() {
 
+  const router = useRouter()
+
+  // Initialize PostHog
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      posthog.init('YOUR_POSTHOG_API_KEY', { api_host: 'https://app.posthog.com' })
+
+      // Example of capturing an event
+      posthog.capture('page_loaded', { appTitle })
+    }
+  }, [])
+
+  const sendToFlashcards = async () => {
+    posthog.capture('navigate_to_flashcards')
+    router.push('/generate')
+  }
+
   const handleSubmit = async () => {
+    posthog.capture('donate_button_clicked')
+
     const checkoutSession = await fetch('/api/checkout_session', {
       method: "POST",
       headers: {
@@ -36,7 +57,7 @@ export default function Home() {
   }
 
   return (
-    <Container maxWidth="100vw" sx={{ backgroundColor: "#FFDAB9", maxHeight:"100vh" }}>
+    <Container maxWidth="100vw" sx={{ backgroundColor: "#FFDAB9", minHeight: "100%" }}>
       <Head>
         <title>{appTitle}</title>
         <meta name='description' content='Create flashcards from your text!' />
@@ -56,23 +77,23 @@ export default function Home() {
       </AppBar>
 
       <Box sx={{textAlign: "center", my: 4, backgroundColor:"#FFDAB9" }}>
-        <Typography variant='h2' gutterBottom>Welcome to {appTitle}!</Typography>
-        <Typography variant="h5" gutterBottom>The easiest way to make flashcards from your text!</Typography>
-        <Button variant='contained' sx={{mt: 2, backgroundColor: "#634526", '&:hover': { backgroundColor: "#52371E" }}}>Get Started</Button>
+        <Typography variant='h2' >Welcome to {appTitle}!</Typography>
+        <Typography variant="h5" >The easiest way to make flashcards from your text!</Typography>
+        <Button variant='contained' onClick={sendToFlashcards} sx={{mt: 2, backgroundColor: "#634526", '&:hover': { backgroundColor: "#52371E" }}}>Get Started</Button>
       </Box>
 
       <Box sx={{my: 6, textAlign: "center", backgroundColor:"#FFDAB9" }}>
-        <Typography variant='h4' components="h2" gutterBottom>Features</Typography>
+        <Typography variant='h4' components="h2" >Features</Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
-            <Typography variant="h6" gutterBottom>Easy Text Input</Typography>
+            <Typography variant="h6" >Easy Text Input</Typography>
             <Typography>Simply input your text and let our software do the rest. Creating flashcards has never been easier.</Typography>
           </Grid>
-          <Grid item xs={12} md={4} gutterBottom>
+          <Grid item xs={12} md={4} >
             <Typography variant="h6">Smart Flashcards</Typography>
-            <Typography>Our AI intelligently breaks down your text into consice flashcards, perfect for studying</Typography>
+            <Typography>Our AI intelligently breaks down your text into concise flashcards, perfect for studying</Typography>
           </Grid>
-          <Grid item xs={12} md={4} gutterBottom>
+          <Grid item xs={12} md={4} >
             <Typography variant="h6">Accessible Anywhere</Typography>
             <Typography>Access your flashcards from any device, at any time. Study on the go with ease.</Typography>
           </Grid>
@@ -84,18 +105,17 @@ export default function Home() {
         <Grid container spacing={4}>
           <Grid item xs={12} md={6}>
             <Box sx={{p:3, border: "1px solid", borderColor: "grey.300", borderRadius: 2}}>
-              <Typography variant="h5" gutterBottom>Basic</Typography>
-              <Typography variant="h6" gutterBottom>£5 / month</Typography>
+              <Typography variant="h5" >Basic</Typography>
+              <Typography variant="h6">Free</Typography>
               <Typography>Access to basic flashcard features and limited storage.</Typography>
-              <Button variant='contained'  sx={{mt: 2, backgroundColor: "#634526", '&:hover': { backgroundColor: "#52371E" }}} onClick={handleSubmit}>Choose Basic</Button>
+              <Button variant='contained'  sx={{mt: 2, backgroundColor: "#634526", '&:hover': { backgroundColor: "#52371E" }}} onClick={sendToFlashcards}>Choose Basic</Button>
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
             <Box sx={{p:3, border: "1px solid", borderColor: "grey.300", borderRadius: 2}}>
-              <Typography variant="h5" gutterBottom>Pro</Typography>
-              <Typography variant="h6" gutterBottom>£10 / month</Typography>
-              <Typography>Unlimited flashcards and storage, with priority support.</Typography>
-              <Button variant='contained' sx={{mt: 2, backgroundColor: "#634526", '&:hover': { backgroundColor: "#52371E" }}} onClick={handleSubmit}>Choose Pro</Button>
+              <Typography variant="h5" >Donate</Typography>
+              <Typography variant="h6" >Help support our up and coming startup company by donating $2</Typography>
+              <Button variant='contained' sx={{mt: 2, backgroundColor: "#634526", '&:hover': { backgroundColor: "#52371E" }}} onClick={handleSubmit}>DONATE HERE</Button>
             </Box>
           </Grid>
         </Grid>
